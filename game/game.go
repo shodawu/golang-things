@@ -8,19 +8,23 @@ type Game struct {
 
 // Guess ...
 func (g *Game) Guess(num int) string {
-	var s string = ""
+	var s string = "遊戲已結束"
+	if g.Opptunity <= 0 {
+		return s
+	}
+
 	g.Opptunity--
 
 	if g.Answer == num {
-		s = "恭喜過關"
+		s = "恭喜過關" //
 	} else {
 		if g.Opptunity <= 0 {
-			s = "失敗"
+			s = "失敗" //
 		} else {
 			if g.Answer > num {
-				s = "過小"
+				s = "過小" //
 			} else {
-				s = "過大"
+				s = "過大" //
 			}
 		}
 	}
