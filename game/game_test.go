@@ -8,43 +8,33 @@ import (
 // 1. 程式碼覆蓋率
 // 2. 邊界值
 
-type GameCase struct {
-	Game  Game
-	Cases []GuessCase
-}
-
-type GuessCase struct {
-	Guess int
-	Want  string
-}
-
 func TestGuess(t *testing.T) {
 
-	tGame := GameCase{
+	tGame := Sample{
 		Game: Game{
 			Answer:    90,
 			Opptunity: 3,
 		},
-		Cases: []GuessCase{
+		Guesses: []Guess{
 			{
-				Guess: 8,
-				Want:  "過小",
+				Guess:   8,
+				WantMsg: "過小",
 			},
 			{
-				Guess: 99,
-				Want:  "過大",
+				Guess:   99,
+				WantMsg: "過大",
 			},
 			{
-				Guess: 99,
-				Want:  "失敗",
+				Guess:   99,
+				WantMsg: "失敗",
 			},
 		},
 	}
 
-	for _, guess := range tGame.Cases {
+	for _, guess := range tGame.Guesses {
 		got := tGame.Game.Guess(guess.Guess)
-		if got != guess.Want {
-			t.Errorf("Guess() = %v; want %v", got, guess.Want)
+		if got != guess.WantMsg {
+			t.Errorf("Guess() = %v; want %v", got, guess.WantMsg)
 		}
 	}
 
@@ -53,50 +43,50 @@ func TestGuess(t *testing.T) {
 // TestGuessCodeFirst 先有code 再有testing case
 func TestGuessCodeFirst(t *testing.T) {
 
-	mGameCases := map[string]GameCase{}
-	mGameCases["PassAt1st"] = GameCase{
+	mGameCases := map[string]Sample{}
+	mGameCases["PassAt1st"] = Sample{
 		Game: Game{
 			Answer:    90,
 			Opptunity: 3,
 		},
-		Cases: []GuessCase{
+		Guesses: []Guess{
 			{
-				Guess: 90,
-				Want:  "恭喜過關",
+				Guess:   90,
+				WantMsg: "恭喜過關",
 			},
 		},
 	}
 
-	mGameCases["PassAt4st"] = GameCase{
+	mGameCases["PassAt4st"] = Sample{
 		Game: Game{
 			Answer:    90,
 			Opptunity: 3,
 		},
-		Cases: []GuessCase{
+		Guesses: []Guess{
 			{
-				Guess: 91,
-				Want:  "過大",
+				Guess:   91,
+				WantMsg: "過大",
 			},
 			{
-				Guess: 89,
-				Want:  "過小",
+				Guess:   89,
+				WantMsg: "過小",
 			},
 			{
-				Guess: 1,
-				Want:  "失敗",
+				Guess:   1,
+				WantMsg: "失敗",
 			},
 			{
-				Guess: 90,
-				Want:  "遊戲已結束",
+				Guess:   90,
+				WantMsg: "遊戲已結束",
 			},
 		},
 	}
 
 	for k, gameCase := range mGameCases {
-		for _, guess := range gameCase.Cases {
+		for _, guess := range gameCase.Guesses {
 			got := gameCase.Game.Guess(guess.Guess)
-			if got != guess.Want {
-				t.Errorf("Test for %v , Guess() = %v; want %v", k, got, guess.Want)
+			if got != guess.WantMsg {
+				t.Errorf("Test for %v , Guess() = %v; want %v", k, got, guess.WantMsg)
 			}
 		}
 	}
