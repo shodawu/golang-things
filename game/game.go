@@ -11,6 +11,7 @@ import (
 type Game struct {
 	Answer    int
 	Opptunity int
+	GuessMsg  string //for godog
 }
 
 // Guess ...
