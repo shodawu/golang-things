@@ -8,10 +8,6 @@ import (
 	"github.com/cucumber/godog"
 )
 
-// Gherkin語法：https://cucumber.io/docs/gherkin/reference/
-// cucumber支援各種主流語言 Ruby、JAVA、javascript、.NET、PHP
-// .feature檔案方便閱讀、傳遞知識
-
 func (gs *Sample) gameATargetIs(arg1 int) error {
 	gs.Game.Answer = arg1
 	return nil

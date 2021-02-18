@@ -18,3 +18,9 @@
 
 ## 參考資料
 * https://golang.org/doc/install/source
+
+## BDD behavior-driven development
+* Gherkin語法：https://cucumber.io/docs/gherkin/reference/
+* cucumber支援各種主流語言 Ruby、JAVA、javascript、.NET、PHP
+* cucumber in golang: https://github.com/cucumber/godog
+* .feature檔案方便閱讀、傳遞知識
