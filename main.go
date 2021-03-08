@@ -1,12 +1,17 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"number-game/svcnotify"
+	apiserver "number-game/api-server"
+	webclient "number-game/web-client"
 )
 
+var nSrvCli = flag.Int("n", 1, "1: run server, 2: run client.")
+
 func main() {
-	fmt.Printf("hello, world\n")
+	flag.Parse()
+	fmt.Printf("hello, world n= %v\n", *nSrvCli)
 
 	// lstSample := hubs.Controller{}
 	// lstSample.Hubs = game.LoadSamples()
@@ -15,6 +20,15 @@ func main() {
 	// 	log.Println("testing passed: ", ok)
 	// }
 
-	svcnotify.TriggerExec()
+	// svcnotify.TriggerExec()
+
+	switch *nSrvCli {
+	case 1:
+		fmt.Println("Run Server")
+		apiserver.RunServer()
+	case 2:
+		fmt.Println("Run Clients")
+		webclient.RunClient()
+	}
 
 }
