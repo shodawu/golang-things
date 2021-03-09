@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"sync"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 // RunClient ...
@@ -94,4 +97,48 @@ func RunClientP2() {
 
 func p2UUIDChan(c chan string, data string) {
 	c <- data
+}
+
+type Conn struct {
+	ID         int
+	SocketConn *websocket.Conn
+	Recv       chan []byte
+}
+
+func RunClientP3() {
+	var wg sync.WaitGroup
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		u := url.URL{Scheme: "ws", Host: "localhost:1234", Path: "ping"}
+		reqHeader := http.Header{}
+		wsConn, _, err := websocket.DefaultDialer.Dial(u.String(), reqHeader)
+
+		if err == nil {
+			fmt.Printf("Process: %v connected\n", i)
+			cli := Conn{
+				ID:         i,
+				SocketConn: wsConn,
+			}
+			go cli.Listen()
+		}
+	}
+	wg.Wait()
+}
+
+func (c *Conn) Listen() {
+	defer func() {
+		c.SocketConn.Close()
+		fmt.Println(c.ID, "was disconnected")
+	}()
+
+	for {
+		_, message, err := c.SocketConn.ReadMessage()
+		if err != nil {
+			fmt.Printf("Process: %v, websocket error: %v\n", c.ID, err)
+			c.SocketConn.Close()
+			break
+		}
+		fmt.Printf("Process: %v, Get Message: %v\n", c.ID, string(message))
+
+	}
 }

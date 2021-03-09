@@ -28,7 +28,7 @@ func main() {
 		apiserver.RunServer()
 	case 2:
 		fmt.Println("Run Clients")
-		webclient.RunClientP2()
+		webclient.RunClientP3()
 	}
 
 }
