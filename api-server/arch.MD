@@ -1,7 +1,26 @@
 ## 常見系統串接架構
-同步程序 - timeout問題
-非同步程序(持續連線) - 斷線/恢復，server up/down問題
-並行程序 - server and client\polling 
-並行程序 - api and webhook 
+* 保持連線、同步程序
+* 不保持連線、同步程序
+* 保持連線、非同步程序 - server and client\polling 
+* 不保持連線、非同步程序 - api and webhook 
 
-### 
+### Part 1 - 保持連線、同步程序
+* http client <-> http server
+* 需考慮風險： 連線逾時、斷線
+
+### Part 2 - 不保持連線、同步程序
+* http client -> http server
+* http server -> data store
+* http client <-> data store
+* 需考慮風險： data store、使用較多程序與系統資源
+
+### Part 3 - 保持連線、非同步程序
+* socket client <-> socket server
+* 需考慮風險： server down
+
+### Part 4 - 不保持連線、非同步程序
+* http server request -> http server serve
+* http server webhook <- http server serve
+* 需考慮風險： token
+
+
