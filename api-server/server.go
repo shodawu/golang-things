@@ -1,6 +1,7 @@
 package apiserver
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -20,15 +21,16 @@ var mP3Conns map[*webclient.Conn]bool
 // RunServer ...
 func RunServer() {
 
-	// cUUID = make(chan string)
+	cUUID = make(chan string)
 	// go storeUUID2(cUUID)
+	go storeUUID4(cUUID)
 
-	mP3Conns = make(map[*webclient.Conn]bool)
-	go storeUUID3()
+	// mP3Conns = make(map[*webclient.Conn]bool)
+	// go storeUUID3()
 
 	s := &http.Server{
 		Addr:           ":1234",
-		Handler:        http.HandlerFunc(handlePing3),
+		Handler:        http.HandlerFunc(handlePing4),
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
@@ -88,5 +90,24 @@ func storeUUID3() {
 			c.SocketConn.WriteMessage(websocket.TextMessage, []byte(u.String()))
 		}
 		time.Sleep(5000 * time.Millisecond)
+	}
+}
+
+func handlePing4(w http.ResponseWriter, r *http.Request) {
+	u, _ := uuid.NewUUID()
+	go func(c chan string, data string) {
+		c <- data
+	}(cUUID, u.String())
+}
+
+func storeUUID4(c chan string) {
+	for {
+		s := <-c
+		time.Sleep(2000 * time.Millisecond)
+		_, err := http.Post("http://localhost:2234/pong", "application/json",
+			bytes.NewBuffer([]byte(s)))
+		if err != nil {
+			fmt.Println("response error", err)
+		}
 	}
 }

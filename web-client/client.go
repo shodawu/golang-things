@@ -142,3 +142,37 @@ func (c *Conn) Listen() {
 
 	}
 }
+
+func RunClientP4() {
+	s := &http.Server{
+		Addr:           ":2234",
+		Handler:        http.HandlerFunc(handlePong),
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	go func() {
+		for {
+			r, err := http.Post("http://localhost:1234/ping", "application/json", nil)
+			if err != nil {
+				fmt.Println(err)
+				time.Sleep(5 * time.Second)
+				continue
+			}
+			fmt.Println("Process send request")
+			defer r.Body.Close()
+			time.Sleep(500 * time.Millisecond)
+		}
+	}()
+
+	erPong := s.ListenAndServe()
+	fmt.Println("Listen :2234", erPong)
+
+}
+
+func handlePong(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+	body, _ := ioutil.ReadAll(r.Body)
+	fmt.Println(string(body))
+}
