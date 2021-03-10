@@ -24,3 +24,10 @@
 * cucumber支援各種主流語言 Ruby、JAVA、javascript、.NET、PHP
 * cucumber in golang: https://github.com/cucumber/godog
 * .feature檔案方便閱讀、傳遞知識
+* [範例](./game/features/game.feature)
+
+## C4-Model範例
+* [參考文件](./svcnotify/docs/c4.MD)
+
+## 常見系統串接架構
+* [參考文件](./api-server/arch.MD)
