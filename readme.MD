@@ -21,8 +21,15 @@
 * [範例](./game/features/game.feature)
 
 # C4-Model範例
+<<<<<<< HEAD
 * [需求](./svcnotify/docs/req.md)
 * [C4-Model](./svcnotify/docs/c4.md)
 
 # 常見系統串接架構
 * [4種串接架構介紹](./api-server/arch.MD) 
+=======
+* [參考文件](./svcnotify/docs/c4.MD)
+
+# 常見系統串接架構
+* [參考文件](./api-server/arch.MD) 
+>>>>>>> 9c3989d6db0211513ea7f5a977ab9111b96f1918
